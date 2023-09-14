@@ -35,6 +35,7 @@
             this.TreeView1 = new System.Windows.Forms.TreeView();
             this.label2 = new System.Windows.Forms.Label();
             this.Exit = new System.Windows.Forms.Button();
+            this.clear = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // PlainText
@@ -102,11 +103,22 @@
             this.Exit.UseVisualStyleBackColor = true;
             this.Exit.Click += new System.EventHandler(this.Exit_Click);
             // 
+            // clear
+            // 
+            this.clear.Location = new System.Drawing.Point(324, 415);
+            this.clear.Name = "clear";
+            this.clear.Size = new System.Drawing.Size(75, 23);
+            this.clear.TabIndex = 8;
+            this.clear.Text = "Limpiar";
+            this.clear.UseVisualStyleBackColor = true;
+            this.clear.Click += new System.EventHandler(this.clear_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.clear);
             this.Controls.Add(this.Exit);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.TreeView1);
@@ -129,6 +141,7 @@
         private System.Windows.Forms.TreeView TreeView1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button Exit;
+        private System.Windows.Forms.Button clear;
     }
 }
 

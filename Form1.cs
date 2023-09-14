@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace TreeParser
 {
@@ -36,35 +37,72 @@ namespace TreeParser
 
         private void Execute_Click(object sender, EventArgs e)
         {
-            TextReader reader = new StringReader(PlainText.Text);
-            TreeNode node = new TreeNode();
-            node.Text = "Root";
-            TreeView1.Nodes.Add(node);
-            TreeParser(node, TreeView1, reader);
+
+            TreeParser(TreeView1);
         }
 
-        private void TreeParser(TreeNode node, System.Windows.Forms.TreeView treeView, TextReader reader)
+        private void TreeParser(System.Windows.Forms.TreeView treeView)
         {
-            if (reader.Peek() == -1) { return; }
-            if (reader.Peek() == '.')
+            TextReader reader = new StringReader(PlainText.Text);
+            TreeNode currentNode = null;
+
+            while (reader.Peek() != -1)
             {
-                reader.Read();
-                TreeParser(node, treeView, reader);
-            }
-            else
-            {
-                TreeView1.SelectedNode = node;
-                TreeNode son = new TreeNode();
-                son.Text = reader.ReadLine();
-                TreeView1.SelectedNode.Nodes.Add(son);
-                TreeParser(son, treeView, reader);
+                string line = reader.ReadLine();
+                int depth = 0;
+
+                while (line.Length > 0 && line[0] == '.')
+                {
+                    depth++;
+                    line = line.Substring(1);
+                }
+
+                TreeNode node = new TreeNode();
+                node.Text = line;
+
+                if (depth == 0)
+                {
+                    treeView.Nodes.Add(node);
+                    currentNode = node;
+                }
+                else if (currentNode != null)
+                {
+                    AddNodeAtDepth(currentNode, node, depth);
+                }
             }
         }
+
+        private void AddNodeAtDepth(TreeNode parent, TreeNode node, int depth)
+        {
+            TreeNode currentNode = parent;
+            for (int i = 1; i < depth; i++)
+            {
+                if (currentNode.Nodes.Count > 0)
+                {
+                    currentNode = currentNode.Nodes[currentNode.Nodes.Count - 1];
+                }
+                else
+                {
+                    TreeNode dummyNode = new TreeNode();
+                    currentNode.Nodes.Add(dummyNode);
+                    currentNode = dummyNode;
+                }
+            }
+
+            currentNode.Nodes.Add(node);
+        }
+
+
 
 
         private void Exit_Click(object sender, EventArgs e)
         {
+            this.Close();
+        }
 
+        private void clear_Click(object sender, EventArgs e)
+        {
+            TreeView1.Nodes.Clear();
         }
     }
 }
